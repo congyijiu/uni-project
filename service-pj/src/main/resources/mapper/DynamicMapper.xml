@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.uni.pj.mapper.DynamicMapper">
+    <select id="selectMyPage" resultType="com.uni.pj.vos.PageVo">
+        SELECT d.id,d.title,d.image_url,d.like_count,u.username,u.avatar_url
+        from dynamic d
+        join users u on d.user_id=u.id
+        <where>
+            1=1
+            <if test="title != null">
+                and d.title like concat('%',#{title},'%')
+            </if>
+            <if test="type != null">
+                and d.type_id = #{type}
+            </if>
+        </where>
+        ORDER BY d.post_date
+    </select>
+</mapper>
