@@ -3,6 +3,7 @@ package com.uni.pj.controller;
 import com.uni.pj.common.ResponseResult;
 import com.uni.pj.service.DynamicTypesService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,7 @@ public class DynamicTypesController {
     @Autowired
     private DynamicTypesService dynamicTypesService;
 
+    @ApiOperation("查询所有动态类型")
     @PostMapping("/list")
     public ResponseResult list(){
         return ResponseResult.okResult(dynamicTypesService.list());

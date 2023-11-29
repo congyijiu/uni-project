@@ -24,6 +24,18 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <knife4j-openapi3-spring.version>4.3.0</knife4j-openapi3-spring.version>
     </properties>
+    <dependencies>
+        <!--引入lombok依赖-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <!--引入knife4j依赖-->
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-spring-boot-starter</artifactId>
+        </dependency>
+    </dependencies>
 
     <dependencyManagement>
         <dependencies>
@@ -71,7 +83,13 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>1.7.32</version>
+                <version>1.7.30</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12 -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>1.7.30</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

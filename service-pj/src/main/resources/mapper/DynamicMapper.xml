@@ -5,16 +5,20 @@
 
 <mapper namespace="com.uni.pj.mapper.DynamicMapper">
     <select id="selectMyPage" resultType="com.uni.pj.vos.PageVo">
-        SELECT d.id,d.title,d.image_url,d.like_count,u.username,u.avatar_url
+        SELECT d.id,d.title,d.image_url,d.like_count,u.username,u.avatar_url,a.islike
         from dynamic d
         join users u on d.user_id=u.id
+        left join user_dynamic_actions a on a.dynamic_id = d.id and a.user_id = #{userId}
         <where>
             1=1
-            <if test="title != null">
-                and d.title like concat('%',#{title},'%')
+            <if test="pageDto.keyWord != null">
+                and d.title like concat('%',#{pageDto.keyWord},'%')
             </if>
-            <if test="type != null">
-                and d.type_id = #{type}
+            <if test="pageDto.type != null">
+                and d.type_id = #{pageDto.type}
+            </if>
+            <if test="pageDto.userId != null">
+                and u.id = #{pageDto.userId}
             </if>
         </where>
         ORDER BY d.post_date

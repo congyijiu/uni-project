@@ -14,6 +14,12 @@ import java.util.List;
 public class DynamicDetailVo extends Dynamic {
     private List<String> imageUrlList;
 
+    private Integer isLike;
+
+    private Integer isFavorite;
+
+    private Integer isFollow;
+
     public void setImageUrlList(String imageUrl) {
         imageUrlList = new ArrayList<>();
         String[] split = imageUrl.split(",");

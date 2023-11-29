@@ -3,6 +3,7 @@ package com.uni.pj.controller;
 import com.uni.pj.common.ResponseResult;
 import com.uni.pj.dtos.UserLoginDto;
 import com.uni.pj.dtos.UserRegisterDto;
+import com.uni.pj.pojos.Users;
 import com.uni.pj.service.UsersService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -43,5 +44,34 @@ public class UserController {
     @ApiOperation("注册")
     public ResponseResult register(@RequestBody UserRegisterDto userRegisterDto) {
         return usersService.register(userRegisterDto);
+    }
+
+
+    /**
+     * 根据id查询用户信息
+     */
+    @GetMapping("/info/{id}")
+    @ApiOperation("根据id查询用户信息")
+    public ResponseResult getUserInfoById(@PathVariable("id") Integer id) {
+        return usersService.getUserInfoById(id);
+    }
+
+    /**
+     *  查询当前登录用户信息
+     */
+    @GetMapping("/info")
+    @ApiOperation("查询当前登录用户信息")
+    public ResponseResult getUserInfo() {
+        return usersService.getUserInfo();
+    }
+
+    /**
+     * 修改用户信息
+     */
+    @PutMapping("/info")
+    @ApiOperation("修改用户信息")
+    public ResponseResult updateUserInfo(@RequestBody Users users) {
+
+        return usersService.updateUserInfo(users);
     }
 }

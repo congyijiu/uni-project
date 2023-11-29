@@ -2,6 +2,7 @@ package com.uni.pj.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.uni.pj.common.ResponseResult;
+import com.uni.pj.common.enums.AppHttpCodeEnum;
 import com.uni.pj.dtos.UserLoginDto;
 import com.uni.pj.dtos.UserRegisterDto;
 import com.uni.pj.mapper.UsersMapper;
@@ -9,7 +10,11 @@ import com.uni.pj.pojos.Users;
 import com.uni.pj.service.UsersService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.uni.pj.utils.AppJwtUtil;
+import com.uni.pj.utils.AppThreadLocalUtil;
 import com.uni.pj.utils.MD5Utils;
+import com.uni.pj.vos.UserInfoVo;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -24,13 +29,17 @@ import java.util.Map;
  * @since 2023-11-21
  */
 @Service
+@Slf4j
 public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements UsersService {
 
     @Override
     public ResponseResult login(UserLoginDto userLoginDto) {
+
+        log.info("用户登录");
+
         //1.校验参数
         if (userLoginDto == null || userLoginDto.getUsername() == null || userLoginDto.getPassword() == null) {
-            return ResponseResult.errorResult(400,"参数错误");
+            return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID);
         }
 
         //2.根据用户名查询用户
@@ -41,7 +50,8 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
 
         //3.判断用户是否存在
         if (users == null) {
-            return ResponseResult.errorResult(400,"用户不存在");
+            log.info("用户登录失败");
+            return ResponseResult.errorResult(AppHttpCodeEnum.AP_USER_DATA_NOT_EXIST);
         }
 
         //4.判断密码是否正确
@@ -52,38 +62,46 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
             Map<String, String> map = new HashMap<>();
             map.put("token", token);
             map.put("username", users.getUsername());
+
+            log.info("用户:{}",map.get("username"));
+            log.info("用户登录成功");
             return ResponseResult.okResult(map);
         }
 
+        log.info("用户登录失败");
 
-
-        return ResponseResult.errorResult(400,"密码错误");
+        return ResponseResult.errorResult(AppHttpCodeEnum.LOGIN_PASSWORD_ERROR);
     }
 
     @Override
     public ResponseResult register(UserRegisterDto userRegisterDto) {
+
+        log.info("用户注册");
+
         //1.校验参数
         if (userRegisterDto == null || userRegisterDto.getUsername() == null || userRegisterDto.getPassword() == null) {
-            return ResponseResult.errorResult(400,"参数错误");
+            log.info("用户注册失败");
+            return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID);
         }
+
         //2.根据用户名查询用户
         String username = userRegisterDto.getUsername();
         LambdaQueryWrapper<Users> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Users::getUsername, username);
         Users users = this.getOne(wrapper);
+
         //3.判断用户是否存在
         if (users != null) {
-            return ResponseResult.errorResult(400,"用户已存在");
+            log.info("用户注册失败");
+            log.info("--------------------------------------");
+            return ResponseResult.errorResult(AppHttpCodeEnum.DATA_EXIST);
         }
-        //4.判断两次密码是否一致
-        if (!userRegisterDto.getPassword().equals(userRegisterDto.getPasswordAgain())) {
-            return ResponseResult.errorResult(400,"两次密码不一致");
-        }
-        //5.md5加密
+
+        //4.md5加密
         String encode = MD5Utils.encode(userRegisterDto.getPassword());
         userRegisterDto.setPassword(encode);
 
-        //4.保存用户
+        //5.保存用户
         Users user = new Users();
         user.setUsername(userRegisterDto.getUsername());
         user.setPassword(userRegisterDto.getPassword());
@@ -94,6 +112,108 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
         map.put("username", user.getUsername());
 
 
+        log.info("用户:{}",map.get("username"));
+        log.info("用户注册成功");
+        log.info("--------------------------------------");
+
         return ResponseResult.okResult(map);
+    }
+
+    @Override
+    public ResponseResult getUserInfo() {
+
+        Integer appUserId = AppThreadLocalUtil.getAppUserId();
+
+        Users users = this.getById(appUserId);
+
+        if(users == null){
+            return ResponseResult.errorResult(AppHttpCodeEnum.DATA_NOT_EXIST);
+        }
+
+        UserInfoVo userInfoVo = new UserInfoVo();
+        BeanUtils.copyProperties(users,userInfoVo);
+
+        return ResponseResult.okResult(userInfoVo);
+    }
+
+    @Override
+    public ResponseResult updateUserInfo(Users users) {
+        //1.校验参数
+        if (users == null) {
+            return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID);
+        }
+        //2.获取用户id
+        Integer appUserId = AppThreadLocalUtil.getAppUserId();
+        //3.根据id查询用户
+        Users user = this.getById(appUserId);
+
+        if(user == null){
+            return ResponseResult.errorResult(AppHttpCodeEnum.DATA_NOT_EXIST);
+        }
+
+        //4.修改用户信息
+        Users users1 = new Users();
+
+        //5.设置用户id
+        users1.setId(appUserId);
+        //5.1修改用户密码
+        if (users.getPassword()!= "" && users.getPassword()!=null){
+            String encode = MD5Utils.encode(users.getPassword());
+            users1.setPassword(encode);
+        }
+        //5.2修改用户头像
+        if (users.getAvatarUrl() != "" && users.getAvatarUrl() != null){
+            users1.setAvatarUrl(user.getAvatarUrl());
+        }
+        //5.3修改用户性别
+        if (users.getGender() != "" && users.getGender() != null){
+            users1.setGender(users.getGender());
+        }
+        //5.4修改用户爱好
+        if (users.getHobbies() != "" && users.getHobbies() != null){
+            users1.setHobbies(users.getHobbies());
+        }
+        //5.5修改用户电话号码
+        if (users.getPhoneNumber() != "" && users.getPhoneNumber() != null){
+            users1.setPhoneNumber(users.getPhoneNumber());
+        }
+        //5.6修改用户个性签名
+        if (users.getSignature() != "" && users.getSignature() != null){
+            users1.setSignature(users.getSignature());
+        }
+        //5.7修改用户名
+        if (users.getUsername() != "" && users.getUsername() != null){
+            Users one = this.getOne(new LambdaQueryWrapper<Users>().eq(Users::getUsername, users.getUsername()));
+            if (one != null){
+                return ResponseResult.errorResult(AppHttpCodeEnum.DATA_EXIST);
+            }
+            users1.setUsername(users.getUsername());
+        }
+        //5.8修改用户邮箱
+        if (users.getEmail() != "" && users.getEmail() != null){
+            users1.setEmail(users.getEmail());
+        }
+
+        //6.更新用户信息
+        this.updateById(users1);
+
+        return ResponseResult.okResult(AppHttpCodeEnum.SUCCESS);
+    }
+
+    /**
+     * 根据id查询用户信息
+     * @param id
+     * @return
+     */
+    @Override
+    public ResponseResult getUserInfoById(Integer id) {
+        Users users = this.getById(id);
+        if(users == null){
+            return ResponseResult.errorResult(AppHttpCodeEnum.DATA_NOT_EXIST);
+        }
+        UserInfoVo userInfoVo = new UserInfoVo();
+        BeanUtils.copyProperties(users,userInfoVo);
+
+        return ResponseResult.okResult(userInfoVo);
     }
 }

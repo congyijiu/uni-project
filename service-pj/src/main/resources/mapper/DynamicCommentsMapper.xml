@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.uni.pj.mapper.DynamicCommentsMapper">
+
+
+    <select id="dcPage" resultType="com.uni.pj.vos.DynamicCommentPageVo">
+        SELECT *
+        from dynamic_comments dc
+        join users u on dc.user_id=u.id
+        left join dynamic_comment_actions a on a.comment_id = dc.comment_id and a.user_id = #{userId}
+        <where>
+            dc.top_comment_id IS NULL
+            <if test="dcPageDto.dynamicId != null">
+                and dc.dynamic_id = #{dcPageDto.dynamicId}
+            </if>
+        </where>
+        ORDER BY dc.comment_date desc
+    </select>
+
+
+    <select id="dcrPage" resultType="com.uni.pj.vos.DynamicCommentPageVo">
+        SELECT *
+        from dynamic_comments dc
+        join users u on dc.user_id=u.id
+        left join dynamic_comment_actions a on a.comment_id = dc.comment_id and a.user_id = #{userId}
+        <where>
+            <if test="dcPageDto.dynamicId != null">
+                and dc.dynamic_id = #{dcPageDto.dynamicId}
+            </if>
+            <if test="dcPageDto.topCommentId != null">
+                and dc.top_comment_id = #{dcPageDto.topCommentId}
+            </if>
+        </where>
+        ORDER BY dc.comment_date desc
+    </select>
+</mapper>

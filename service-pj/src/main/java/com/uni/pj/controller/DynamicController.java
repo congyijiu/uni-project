@@ -8,6 +8,7 @@ import com.uni.pj.dtos.PageDto;
 import com.uni.pj.pojos.Dynamic;
 import com.uni.pj.service.DynamicService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +31,7 @@ public class DynamicController {
      * @param pageDto
      * @return
      */
+    @ApiOperation("分页查询动态")
     @PostMapping("/page")
     public ResponseResult page(@RequestBody PageDto pageDto){
         return dynamicService.mypage(pageDto);
@@ -40,6 +42,7 @@ public class DynamicController {
      * @param id
      * @return
      */
+    @ApiOperation("查看动态详情")
     @PostMapping("/detail/{dynamicId}")
     public ResponseResult detail(@PathVariable("dynamicId") Long id){
         return dynamicService.detail(id);

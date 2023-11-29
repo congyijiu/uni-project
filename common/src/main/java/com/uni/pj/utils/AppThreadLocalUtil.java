@@ -8,13 +8,13 @@ import com.uni.pj.pojos.Users;
  * @create 2023-10-05-17:21
  */
 public class AppThreadLocalUtil {
-    private static ThreadLocal<Long> threadLocal = new ThreadLocal<>();
+    private static ThreadLocal<Integer> threadLocal = new ThreadLocal<>();
 
-    public static void setAppUser(Long userId) {
+    public static void setAppUserId(Integer userId) {
         threadLocal.set(userId);
     }
 
-    public static Long getAppUser() {
+    public static Integer getAppUserId() {
         return threadLocal.get();
     }
 

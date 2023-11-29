@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.uni.pj.common.ResponseResult;
 import com.uni.pj.dtos.PageDto;
 import com.uni.pj.pojos.Dynamic;
+import org.springframework.scheduling.annotation.Async;
 
 /**
  * <p>
@@ -18,4 +19,7 @@ public interface DynamicService extends IService<Dynamic> {
     ResponseResult mypage(PageDto pageDto);
 
     ResponseResult detail(Long id);
+
+    @Async
+    void updateDynamicCount(Integer dynamicId, Integer type, Integer count);
 }

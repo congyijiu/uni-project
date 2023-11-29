@@ -42,4 +42,9 @@ public class PageVo {
      */
     private String avatarUrl;
 
+    /**
+     * 是否点赞
+     */
+    private Integer isLike;
+
 }
