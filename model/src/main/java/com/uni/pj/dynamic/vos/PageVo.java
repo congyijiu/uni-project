@@ -1,6 +1,5 @@
-package com.uni.pj.vos;
+package com.uni.pj.dynamic.vos;
 
-import com.uni.pj.pojos.Dynamic;
 import lombok.Data;
 
 /**

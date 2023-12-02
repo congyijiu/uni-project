@@ -1,4 +1,4 @@
-package com.uni.pj.dtos;
+package com.uni.pj.dynamic.dtos;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -40,5 +40,10 @@ public class PageDto {
     @ApiModelProperty(value = "当查询某个用户的动态时，需要传入用户id")
     Integer userId;
 
+    /**
+     * 查询该用户的动态，还是查询该用户的收藏的动态
+     */
+    @ApiModelProperty(value = "0:查询该用户的动态，1:查询该用户的收藏的动态")
+    Integer queryType;
 
 }

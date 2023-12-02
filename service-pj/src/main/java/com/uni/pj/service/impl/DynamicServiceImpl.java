@@ -1,21 +1,23 @@
 package com.uni.pj.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.uni.pj.common.ResponseResult;
 import com.uni.pj.common.enums.AppHttpCodeEnum;
 import com.uni.pj.common.enums.DynamicActionEnum;
-import com.uni.pj.dtos.PageDto;
+import com.uni.pj.dynamic.dtos.DynamicPublishDto;
+import com.uni.pj.dynamic.dtos.PageDto;
 import com.uni.pj.mapper.DynamicMapper;
-import com.uni.pj.pojos.Dynamic;
-import com.uni.pj.pojos.UserDynamicActions;
-import com.uni.pj.pojos.UserFollows;
+import com.uni.pj.dynamic.pojos.Dynamic;
+import com.uni.pj.users.pojo.UserDynamicActions;
+import com.uni.pj.users.pojo.UserFollows;
 import com.uni.pj.service.DynamicService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.uni.pj.service.UserFollowsService;
 import com.uni.pj.utils.AppThreadLocalUtil;
-import com.uni.pj.vos.DynamicDetailVo;
-import com.uni.pj.vos.PageVo;
+import com.uni.pj.dynamic.vos.DynamicDetailVo;
+import com.uni.pj.dynamic.vos.PageVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,7 +84,6 @@ public class DynamicServiceImpl extends ServiceImpl<DynamicMapper, Dynamic> impl
 
 
         log.info("分页查询动态成功");
-        log.info("--------------------------------------");
 
         return ResponseResult.okResult(dynamicPage);
     }
@@ -103,7 +104,6 @@ public class DynamicServiceImpl extends ServiceImpl<DynamicMapper, Dynamic> impl
         //3判断查询结果是否为空
         if (dynamic == null) {
             log.info("查询动态详情失败");
-            log.info("--------------------------------------");
             return ResponseResult.errorResult(AppHttpCodeEnum.DATA_NOT_EXIST);
         }
 
@@ -128,7 +128,6 @@ public class DynamicServiceImpl extends ServiceImpl<DynamicMapper, Dynamic> impl
 
 
         log.info("查询动态详情成功");
-        log.info("--------------------------------------");
 
         return ResponseResult.okResult(dynamicDetailVo);
     }
@@ -151,5 +150,41 @@ public class DynamicServiceImpl extends ServiceImpl<DynamicMapper, Dynamic> impl
             dynamic.setCommentCount(dynamic.getCommentCount()+count);
         }
         this.updateById(dynamic);
+    }
+
+    @Override
+    public ResponseResult publish(DynamicPublishDto publishDto) {
+        //1.校验参数
+        if(publishDto == null){
+            log.info("参数为空");
+            return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID);
+        }
+        if(publishDto.getTitle() == null || publishDto.getTitle().length() > 30 || publishDto.getTitle().length() < 1){
+            log.info("标题为空或者标题长度超过30");
+            return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_REQUIRE);
+        }
+        if(publishDto.getImageUrls() == null || publishDto.getImageUrls().size() < 1 || publishDto.getImageUrls().size() > 6){
+            log.info("图片为空或者图片数量超过6");
+            return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_REQUIRE);
+        }
+        //2.获取当前用户id
+        Integer userId = AppThreadLocalUtil.getAppUserId();
+
+
+        //3.封装动态对象
+        Dynamic dynamic = new Dynamic();
+        BeanUtils.copyProperties(publishDto,dynamic);
+        dynamic.setUserId(userId);
+        String imageUrl = new String("");
+        for (int i = 0; i < publishDto.getImageUrls().size(); i++) {
+            imageUrl += publishDto.getImageUrls().get(i);
+            if(i != publishDto.getImageUrls().size()-1){
+                imageUrl += ",";
+            }
+        }
+        dynamic.setImageUrl(imageUrl);
+        this.save(dynamic);
+        log.info("发布动态成功");
+        return ResponseResult.okResult(dynamic);
     }
 }

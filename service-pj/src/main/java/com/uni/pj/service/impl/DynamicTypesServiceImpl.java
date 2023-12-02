@@ -1,7 +1,7 @@
 package com.uni.pj.service.impl;
 
 import com.uni.pj.mapper.DynamicTypesMapper;
-import com.uni.pj.pojos.DynamicTypes;
+import com.uni.pj.dynamic.pojos.DynamicTypes;
 import com.uni.pj.service.DynamicTypesService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;

@@ -1,23 +1,21 @@
 package com.uni.pj.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.uni.pj.common.ResponseResult;
 import com.uni.pj.common.enums.AppHttpCodeEnum;
-import com.uni.pj.dtos.DynamicCommentsAddDto;
-import com.uni.pj.dtos.DynamicCommentsPageDto;
+import com.uni.pj.dynamic.dtos.DynamicCommentsAddDto;
+import com.uni.pj.dynamic.dtos.DynamicCommentsPageDto;
 import com.uni.pj.mapper.DynamicCommentsMapper;
-import com.uni.pj.pojos.DynamicComments;
-import com.uni.pj.pojos.Users;
+import com.uni.pj.dynamic.pojos.DynamicComments;
+import com.uni.pj.users.pojo.Users;
 import com.uni.pj.service.DynamicCommentsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.uni.pj.service.UsersService;
 import com.uni.pj.utils.AppThreadLocalUtil;
-import com.uni.pj.vos.DynamicCommentPageVo;
+import com.uni.pj.dynamic.vos.DynamicCommentPageVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -52,14 +50,12 @@ public class DynamicCommentsServiceImpl extends ServiceImpl<DynamicCommentsMappe
         //1.校验参数
         if (dynamicCommentsAddDto == null) {
             log.info("添加动态评论失败");
-            log.info("--------------------------------------");
             return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID);
         }
 
         //1.1校验评论内容
         if (dynamicCommentsAddDto.getContent() == null || dynamicCommentsAddDto.getContent().length() < 1) {
             log.info("添加动态评论失败");
-            log.info("--------------------------------------");
             return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID);
         }
 
@@ -92,7 +88,6 @@ public class DynamicCommentsServiceImpl extends ServiceImpl<DynamicCommentsMappe
 
 
         log.info("添加动态评论成功");
-        log.info("--------------------------------------");
 
         //4.更新顶层评论的回复数
         if (dynamicCommentsAddDto.getTopCommentId() != null) {
@@ -100,7 +95,7 @@ public class DynamicCommentsServiceImpl extends ServiceImpl<DynamicCommentsMappe
             this.updateReplyCount(dynamicCommentsAddDto.getTopCommentId());
         }
 
-        return ResponseResult.okResult("添加成功");
+        return ResponseResult.okResult(dynamicComments);
     }
 
 
@@ -118,7 +113,6 @@ public class DynamicCommentsServiceImpl extends ServiceImpl<DynamicCommentsMappe
         //1.校验参数
         if (dynamicCommentsPageDto == null) {
             log.info("分页查询动态评论失败");
-            log.info("--------------------------------------");
             return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID);
         }
         //2.判断是查询动态评论还是动态评论的回复
@@ -131,7 +125,6 @@ public class DynamicCommentsServiceImpl extends ServiceImpl<DynamicCommentsMappe
         }
 
         log.info("分页查询动态评论失败");
-        log.info("--------------------------------------");
         return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID);
     }
 
@@ -176,7 +169,6 @@ public class DynamicCommentsServiceImpl extends ServiceImpl<DynamicCommentsMappe
         baseMapper.dcrPage(page, dynamicCommentsPageDto, userId);
 
         log.info("查询动态评论的回复成功");
-        log.info("--------------------------------------");
 
         return ResponseResult.okResult(page);
     }
@@ -218,7 +210,6 @@ public class DynamicCommentsServiceImpl extends ServiceImpl<DynamicCommentsMappe
         baseMapper.dcPage(page, dynamicCommentsPageDto, userId);
 
         log.info("查询动态评论成功");
-        log.info("--------------------------------------");
 
         return ResponseResult.okResult(page);
     }

@@ -1,6 +1,6 @@
-package com.uni.pj.vos;
+package com.uni.pj.dynamic.vos;
 
-import com.uni.pj.pojos.Dynamic;
+import com.uni.pj.dynamic.pojos.Dynamic;
 import lombok.Data;
 
 import java.util.ArrayList;

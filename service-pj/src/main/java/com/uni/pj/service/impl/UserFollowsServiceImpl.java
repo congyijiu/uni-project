@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.uni.pj.common.ResponseResult;
 import com.uni.pj.common.enums.AppHttpCodeEnum;
 import com.uni.pj.mapper.UserFollowsMapper;
-import com.uni.pj.pojos.UserFollows;
+import com.uni.pj.users.pojo.UserFollows;
 import com.uni.pj.service.UserFollowsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.uni.pj.utils.AppThreadLocalUtil;

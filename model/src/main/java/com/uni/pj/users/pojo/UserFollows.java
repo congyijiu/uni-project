@@ -1,4 +1,4 @@
-package com.uni.pj.pojos;
+package com.uni.pj.users.pojo;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;

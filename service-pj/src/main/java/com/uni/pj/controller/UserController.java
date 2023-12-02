@@ -1,9 +1,11 @@
 package com.uni.pj.controller;
 
 import com.uni.pj.common.ResponseResult;
-import com.uni.pj.dtos.UserLoginDto;
-import com.uni.pj.dtos.UserRegisterDto;
-import com.uni.pj.pojos.Users;
+import com.uni.pj.service.UserFollowsService;
+import com.uni.pj.users.dtos.UserFollowsPageDto;
+import com.uni.pj.users.dtos.UserLoginDto;
+import com.uni.pj.users.dtos.UserRegisterDto;
+import com.uni.pj.users.pojo.Users;
 import com.uni.pj.service.UsersService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,6 +24,9 @@ public class UserController {
 
     @Autowired
     private UsersService usersService;
+
+    @Autowired
+    private UserFollowsService userFollowsService;
 
     /**
      * 登录
@@ -71,7 +76,26 @@ public class UserController {
     @PutMapping("/info")
     @ApiOperation("修改用户信息")
     public ResponseResult updateUserInfo(@RequestBody Users users) {
-
         return usersService.updateUserInfo(users);
     }
+
+
+    /**
+     * 分页查询用户关注列表
+     * @param userFollowsPageDto
+     */
+    @PostMapping("/followsList")
+    @ApiOperation("分页查询用户关注列表")
+    public ResponseResult getUserFollowsList(@RequestBody UserFollowsPageDto userFollowsPageDto) {
+        return usersService.getUserFollowsList(userFollowsPageDto);
+    }
+
+
+    @PostMapping("/follow/{userId}")
+    @ApiOperation("关注/取消关注")
+    public ResponseResult follow(@PathVariable Integer userId) {
+        return userFollowsService.follow(userId);
+    }
+
+
 }

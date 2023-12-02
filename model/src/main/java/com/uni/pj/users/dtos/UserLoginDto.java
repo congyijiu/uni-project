@@ -1,4 +1,4 @@
-package com.uni.pj.dtos;
+package com.uni.pj.users.dtos;
 
 import lombok.Data;
 

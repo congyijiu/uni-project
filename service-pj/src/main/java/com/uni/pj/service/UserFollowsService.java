@@ -2,7 +2,7 @@ package com.uni.pj.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.uni.pj.common.ResponseResult;
-import com.uni.pj.pojos.UserFollows;
+import com.uni.pj.users.pojo.UserFollows;
 
 /**
  * <p>

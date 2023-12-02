@@ -33,6 +33,7 @@ public class UniInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request,HttpServletResponse response, Object handler) throws Exception {
+        log.info("----------------------------------------");
         log.info("进入拦截器");
         //拦截器取到请求先进行判断，如果是OPTIONS请求，则放行
         if("OPTIONS".equals(request.getMethod().toUpperCase())) {
@@ -66,20 +67,27 @@ public class UniInterceptor extends HandlerInterceptorAdapter {
 
         } catch (Exception e) {
             e.printStackTrace();
+            ResponseResult responseResult = ResponseResult.errorResult(AppHttpCodeEnum.TOKEN_INVALID);
+            String jsonObjectStr = JSONObject.toJSONString(responseResult);
+            returnJson(response, jsonObjectStr);
             return false;
         }
         log.info("token验证通过");
         return true;
     }
 
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        log.info("----------------------------------------");
+    }
+
     private void returnJson(HttpServletResponse response, String json) throws Exception{
         PrintWriter writer = null;
         response.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html; charset=utf-8");
+        response.setContentType("application/json;charset=utf-8");
         try {
             writer = response.getWriter();
             writer.print(json);
-
         } catch (IOException e) {
             log.error("response error",e);
         } finally {

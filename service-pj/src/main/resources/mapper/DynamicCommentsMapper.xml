@@ -6,7 +6,7 @@
 <mapper namespace="com.uni.pj.mapper.DynamicCommentsMapper">
 
 
-    <select id="dcPage" resultType="com.uni.pj.vos.DynamicCommentPageVo">
+    <select id="dcPage" resultType="com.uni.pj.dynamic.vos.DynamicCommentPageVo">
         SELECT *
         from dynamic_comments dc
         join users u on dc.user_id=u.id
@@ -21,7 +21,7 @@
     </select>
 
 
-    <select id="dcrPage" resultType="com.uni.pj.vos.DynamicCommentPageVo">
+    <select id="dcrPage" resultType="com.uni.pj.dynamic.vos.DynamicCommentPageVo">
         SELECT *
         from dynamic_comments dc
         join users u on dc.user_id=u.id

@@ -1,9 +1,10 @@
-package com.uni.pj.pojos;
+package com.uni.pj.users.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -67,8 +68,9 @@ public class Users implements Serializable {
     /**
      * 性别，枚举类型
      */
+    @ApiModelProperty(value = "性别,0表示未知，1表示男，2表示女")
     @TableField("gender")
-    private String gender;
+    private Integer gender;
 
     /**
      * 个性签名，最大长度255

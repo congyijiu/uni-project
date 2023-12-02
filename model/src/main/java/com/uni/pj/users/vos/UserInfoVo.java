@@ -1,4 +1,4 @@
-package com.uni.pj.vos;
+package com.uni.pj.users.vos;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -19,7 +19,7 @@ public class UserInfoVo {
     /**
      * 用户唯一标识符，自动增加
      */
-//    private Integer id;
+    private Integer id;
 
 
     /**
@@ -35,7 +35,7 @@ public class UserInfoVo {
     /**
      * 性别，枚举类型
      */
-    private String gender;
+    private Integer gender;
 
     /**
      * 个性签名，最大长度255

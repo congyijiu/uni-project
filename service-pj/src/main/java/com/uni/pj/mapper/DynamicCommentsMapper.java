@@ -2,10 +2,9 @@ package com.uni.pj.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.uni.pj.dtos.DynamicCommentsPageDto;
-import com.uni.pj.pojos.DynamicComments;
-import com.uni.pj.vos.DynamicCommentPageVo;
-import com.uni.pj.vos.PageVo;
+import com.uni.pj.dynamic.dtos.DynamicCommentsPageDto;
+import com.uni.pj.dynamic.pojos.DynamicComments;
+import com.uni.pj.dynamic.vos.DynamicCommentPageVo;
 import org.apache.ibatis.annotations.Param;
 
 /**

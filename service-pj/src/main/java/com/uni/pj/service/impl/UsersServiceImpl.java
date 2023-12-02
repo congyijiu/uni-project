@@ -1,18 +1,21 @@
 package com.uni.pj.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.uni.pj.common.ResponseResult;
 import com.uni.pj.common.enums.AppHttpCodeEnum;
-import com.uni.pj.dtos.UserLoginDto;
-import com.uni.pj.dtos.UserRegisterDto;
+import com.uni.pj.users.dtos.UserFollowsPageDto;
+import com.uni.pj.users.dtos.UserLoginDto;
+import com.uni.pj.users.dtos.UserRegisterDto;
 import com.uni.pj.mapper.UsersMapper;
-import com.uni.pj.pojos.Users;
+import com.uni.pj.users.pojo.Users;
 import com.uni.pj.service.UsersService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.uni.pj.users.vos.UserFollowsPageVos;
 import com.uni.pj.utils.AppJwtUtil;
 import com.uni.pj.utils.AppThreadLocalUtil;
 import com.uni.pj.utils.MD5Utils;
-import com.uni.pj.vos.UserInfoVo;
+import com.uni.pj.users.vos.UserInfoVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -166,7 +169,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
             users1.setAvatarUrl(user.getAvatarUrl());
         }
         //5.3修改用户性别
-        if (users.getGender() != "" && users.getGender() != null){
+        if (users.getGender() != null){
             users1.setGender(users.getGender());
         }
         //5.4修改用户爱好
@@ -215,5 +218,23 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
         BeanUtils.copyProperties(users,userInfoVo);
 
         return ResponseResult.okResult(userInfoVo);
+    }
+
+    @Override
+    public ResponseResult getUserFollowsList(UserFollowsPageDto userFollowsPageDto) {
+        //1.校验参数
+        if (userFollowsPageDto == null) {
+            return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID);
+        }
+        Integer pageIndex = userFollowsPageDto.getPageIndex();
+        Integer pageSize = userFollowsPageDto.getPageSize();
+        if (pageIndex == null || pageSize == null){
+            return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID);
+        }
+        //2.分页查询用户关注列表
+        Page<UserFollowsPageVos> page = new Page<>(pageIndex, pageSize);
+        baseMapper.selectUserFollowsPage(page,userFollowsPageDto);
+
+        return ResponseResult.okResult(page);
     }
 }

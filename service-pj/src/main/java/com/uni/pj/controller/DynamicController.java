@@ -1,11 +1,10 @@
 package com.uni.pj.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.uni.pj.common.ResponseResult;
-import com.uni.pj.dtos.PageDto;
-import com.uni.pj.pojos.Dynamic;
+import com.uni.pj.common.enums.AppHttpCodeEnum;
+import com.uni.pj.dynamic.dtos.DynamicPublishDto;
+import com.uni.pj.dynamic.dtos.PageDto;
+import com.uni.pj.dynamic.pojos.Dynamic;
 import com.uni.pj.service.DynamicService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -49,6 +48,16 @@ public class DynamicController {
     }
 
 
+    /**
+     * 发布动态
+     * @param publishDto
+     * @return
+     */
+    @ApiOperation("发布动态")
+    @PostMapping("/publish")
+    public ResponseResult publish(@RequestBody DynamicPublishDto publishDto){
+        return dynamicService.publish(publishDto);
+    }
 
 
 

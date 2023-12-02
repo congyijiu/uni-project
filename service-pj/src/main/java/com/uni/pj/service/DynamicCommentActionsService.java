@@ -2,8 +2,8 @@ package com.uni.pj.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.uni.pj.common.ResponseResult;
-import com.uni.pj.dtos.DynamicCommentsActionDto;
-import com.uni.pj.pojos.DynamicCommentActions;
+import com.uni.pj.dynamic.dtos.DynamicCommentsActionDto;
+import com.uni.pj.dynamic.pojos.DynamicCommentActions;
 
 /**
  * <p>

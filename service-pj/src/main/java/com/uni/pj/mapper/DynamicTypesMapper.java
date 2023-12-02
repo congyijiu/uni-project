@@ -1,7 +1,7 @@
 package com.uni.pj.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.uni.pj.pojos.DynamicTypes;
+import com.uni.pj.dynamic.pojos.DynamicTypes;
 
 /**
  * <p>

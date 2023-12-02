@@ -1,6 +1,6 @@
 package com.uni.pj.service;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.uni.pj.pojos.DynamicTypes;
+import com.uni.pj.dynamic.pojos.DynamicTypes;
 
 /**
  * <p>

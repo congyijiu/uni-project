@@ -1,4 +1,4 @@
-package com.uni.pj.dtos;
+package com.uni.pj.dynamic.dtos;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
