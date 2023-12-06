@@ -7,7 +7,6 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>model</artifactId>
-    <packaging>war</packaging>
     <name>model</name>
     <dependencies>
         <!--引入mybatis-plus依赖-->
@@ -30,9 +29,5 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
         </dependency>
-
     </dependencies>
-    <build>
-        <finalName>model</finalName>
-    </build>
 </project>

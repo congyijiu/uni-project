@@ -6,8 +6,8 @@ import com.uni.pj.dynamic.dtos.DynamicPublishDto;
 import com.uni.pj.dynamic.dtos.PageDto;
 import com.uni.pj.dynamic.pojos.Dynamic;
 import com.uni.pj.service.DynamicService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/dynamic")
-@Api(tags = "动态相关接口")
-@CrossOrigin(origins = "*", maxAge = 3600)
+@Tag(name = "动态相关接口")
 public class DynamicController {
     @Autowired
     private DynamicService dynamicService;
@@ -30,7 +29,7 @@ public class DynamicController {
      * @param pageDto
      * @return
      */
-    @ApiOperation("分页查询动态")
+    @Operation(summary = "分页查询动态")
     @PostMapping("/page")
     public ResponseResult page(@RequestBody PageDto pageDto){
         return dynamicService.mypage(pageDto);
@@ -41,7 +40,7 @@ public class DynamicController {
      * @param id
      * @return
      */
-    @ApiOperation("查看动态详情")
+    @Operation(summary = "查看动态详情")
     @PostMapping("/detail/{dynamicId}")
     public ResponseResult detail(@PathVariable("dynamicId") Long id){
         return dynamicService.detail(id);
@@ -53,7 +52,7 @@ public class DynamicController {
      * @param publishDto
      * @return
      */
-    @ApiOperation("发布动态")
+    @Operation(summary = "发布动态")
     @PostMapping("/publish")
     public ResponseResult publish(@RequestBody DynamicPublishDto publishDto){
         return dynamicService.publish(publishDto);

@@ -1,8 +1,7 @@
 package com.uni.pj.dynamic.dtos;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiParam;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
@@ -10,7 +9,7 @@ import lombok.Data;
  * @create 2023-11-26-12:09
  */
 @Data
-@ApiModel("动态评论添加Dto")
+@Schema(name = "DynamicCommentsAddDto", description = "动态评论添加Dto")
 public class DynamicCommentsAddDto {
 
     /**
@@ -31,12 +30,12 @@ public class DynamicCommentsAddDto {
     /**
      * 如果为空则为顶层评论，不为空则指向某个顶层评论id
      */
-    @ApiModelProperty("如果为空则为顶层评论，不为空则指向某个顶层评论id")
+    @Schema(description = "如果为空则为顶层评论，不为空则指向某个顶层评论id")
     private Integer topCommentId;
 
     /**
      * 回复目标评论id
      */
-    @ApiModelProperty("回复目标评论id")
+    @Schema(description = "回复目标评论id")
     private Integer toCommentId;
 }
