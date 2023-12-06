@@ -2,6 +2,7 @@ package com.uni.pj.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.uni.pj.users.pojo.UserFollows;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import com.uni.pj.users.pojo.UserFollows;
  * @author author
  * @since 2023-11-28
  */
+@Mapper
 public interface UserFollowsMapper extends BaseMapper<UserFollows> {
 
 }

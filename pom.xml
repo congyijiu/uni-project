@@ -11,7 +11,7 @@
     <parent>
         <artifactId>spring-boot-starter-parent</artifactId>
         <groupId>org.springframework.boot</groupId>
-        <version>2.7.3</version>
+        <version>3.1.1</version>
     </parent>
     <modules>
         <module>model</module>
@@ -19,7 +19,7 @@
         <module>common</module>
     </modules>
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>1.17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <knife4j-openapi3-spring.version>4.3.0</knife4j-openapi3-spring.version>
@@ -33,7 +33,11 @@
         <!--引入knife4j依赖-->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-spring-boot-starter</artifactId>
+            <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
         </dependency>
     </dependencies>
 
@@ -48,7 +52,7 @@
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
-                <version>3.5.1</version>
+                <version>3.5.3.1</version>
             </dependency>
             <!--引入mysql依赖-->
             <dependency>
@@ -66,8 +70,8 @@
             <!-- knife4j openapi3 接口文档 -->
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-spring-boot-starter</artifactId>
-                <version>3.0.3</version>
+                <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+                <version>4.1.0</version>
             </dependency>
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
@@ -79,17 +83,10 @@
                 <artifactId>fastjson</artifactId>
                 <version>1.2.58</version>
             </dependency>
-            <!--slf4j日志-->
             <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>1.7.30</version>
-            </dependency>
-            <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12 -->
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-simple</artifactId>
-                <version>1.7.30</version>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>2.3.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -101,12 +98,14 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>17</source>
+                    <target>17</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
+
 
 </project>

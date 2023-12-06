@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.uni.pj.dynamic.dtos.DynamicCommentsPageDto;
 import com.uni.pj.dynamic.pojos.DynamicComments;
 import com.uni.pj.dynamic.vos.DynamicCommentPageVo;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -15,6 +16,7 @@ import org.apache.ibatis.annotations.Param;
  * @author author
  * @since 2023-11-26
  */
+@Mapper
 public interface DynamicCommentsMapper extends BaseMapper<DynamicComments> {
 
     /**

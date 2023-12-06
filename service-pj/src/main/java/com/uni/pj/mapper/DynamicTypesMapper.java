@@ -2,6 +2,7 @@ package com.uni.pj.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.uni.pj.dynamic.pojos.DynamicTypes;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import com.uni.pj.dynamic.pojos.DynamicTypes;
  * @author author
  * @since 2023-11-21
  */
+@Mapper
 public interface DynamicTypesMapper extends BaseMapper<DynamicTypes> {
 
 }

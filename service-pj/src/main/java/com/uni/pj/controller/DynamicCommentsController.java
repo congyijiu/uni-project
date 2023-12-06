@@ -6,8 +6,8 @@ import com.uni.pj.dynamic.dtos.DynamicCommentsAddDto;
 import com.uni.pj.dynamic.dtos.DynamicCommentsPageDto;
 import com.uni.pj.service.DynamicCommentActionsService;
 import com.uni.pj.service.DynamicCommentsService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,8 +17,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/dynamic-comments")
-@Api(tags = "动态评论相关接口")
-@CrossOrigin(origins = "*", maxAge = 3600)
+@Tag(name = "动态评论相关接口")
 public class DynamicCommentsController {
 
     @Autowired
@@ -32,7 +31,7 @@ public class DynamicCommentsController {
      * @param dynamicCommentsAddDto
      * @return
      */
-    @ApiOperation("添加动态评论")
+    @Operation(summary = "添加动态评论")
     @PostMapping("/add")
     public ResponseResult addDynamicComments(@RequestBody DynamicCommentsAddDto dynamicCommentsAddDto) {
         return dynamicCommentsService.addDynamicComments(dynamicCommentsAddDto);
@@ -43,7 +42,7 @@ public class DynamicCommentsController {
      * @param dynamicCommentsPageDto
      * @return
      */
-    @ApiOperation("分页查询动态评论")
+    @Operation(summary = "分页查询动态评论")
     @PostMapping("/page")
     public ResponseResult DynamicCommentsPage(@RequestBody DynamicCommentsPageDto dynamicCommentsPageDto) {
         return dynamicCommentsService.DynamicCommentsPage(dynamicCommentsPageDto);
@@ -54,7 +53,7 @@ public class DynamicCommentsController {
      * @param dto
      * @return
      */
-    @ApiOperation("用户评论点赞")
+    @Operation(summary = "用户评论点赞")
     @PostMapping("/like")
     public ResponseResult likeDynamicComments(@RequestBody DynamicCommentsActionDto dto) {
         return dynamicCommentActionsService.likeDynamicComments(dto);

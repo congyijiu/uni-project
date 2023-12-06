@@ -1,63 +1,26 @@
 package com.uni.pj.config;
-
+import io.swagger.v3.oas.models.ExternalDocumentation;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.ParameterBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.schema.ModelRef;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
-import springfox.documentation.service.Parameter;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * knife4j配置信息
  */
 @Configuration
-@EnableSwagger2WebMvc
 public class Knife4jConfig {
-
     @Bean
-    public Docket adminApiConfig(){
-        List<Parameter> pars = new ArrayList<>();
-        ParameterBuilder tokenPar = new ParameterBuilder();
-        tokenPar.name("token")
-                .description("用户token")
-                .defaultValue("")
-                .modelRef(new ModelRef("string"))
-                .parameterType("header")
-                .required(false)
-                .build();
-        pars.add(tokenPar.build());
-        //添加head参数end
-
-        Docket adminApi = new Docket(DocumentationType.SWAGGER_2)
-                .groupName("Api")
-                .apiInfo(adminApiInfo())
-                .select()
-                //只显示admin路径下的页面
-                .apis(RequestHandlerSelectors.basePackage("com.uni.pj.controller"))
-                .paths(PathSelectors.regex("/.*"))
-                .build()
-                .globalOperationParameters(pars);
-        return adminApi;
-    }
-
-    private ApiInfo adminApiInfo(){
-
-        return new ApiInfoBuilder()
-                .title("API文档")
-                .description("本文档描述了uni项目接口定义")
-                .version("1.0")
-                .contact(new Contact("congyijiu", "http://congyijiu.com", "2225668977@qq.com"))
-                .build();
+    public OpenAPI springShopOpenAPI() {
+        return new OpenAPI()
+                .info(new Info().title("uniproject") // 标题
+                        .description(" uniprojectAPI文档") // 描述
+                        .version("v1") // 版本
+                        .license(new License().name("Apache 2.0").url("http://springdoc.org"))) // 许可证信息
+                        .externalDocs(new ExternalDocumentation() // 文档配置
+                        .description("外部文档") // 描述
+                        .url("https://congyijiu.wenlingyun.com/doc.html")); // 文档URL
     }
 
 

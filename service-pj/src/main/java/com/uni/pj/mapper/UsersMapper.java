@@ -7,6 +7,7 @@ import com.uni.pj.dynamic.vos.PageVo;
 import com.uni.pj.users.dtos.UserFollowsPageDto;
 import com.uni.pj.users.pojo.Users;
 import com.uni.pj.users.vos.UserFollowsPageVos;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -17,6 +18,7 @@ import org.apache.ibatis.annotations.Param;
  * @author author
  * @since 2023-11-21
  */
+@Mapper
 public interface UsersMapper extends BaseMapper<Users> {
 
     /**

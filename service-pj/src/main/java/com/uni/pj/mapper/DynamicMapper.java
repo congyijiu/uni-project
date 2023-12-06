@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.uni.pj.dynamic.dtos.PageDto;
 import com.uni.pj.dynamic.pojos.Dynamic;
 import com.uni.pj.dynamic.vos.PageVo;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -15,6 +16,7 @@ import org.apache.ibatis.annotations.Param;
  * @author author
  * @since 2023-11-21
  */
+@Mapper
 public interface DynamicMapper extends BaseMapper<Dynamic> {
     /**
      * 自定义sql分页

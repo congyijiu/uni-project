@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -25,6 +25,7 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("users")
+@Schema(name = "用户")
 public class Users implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -68,7 +69,7 @@ public class Users implements Serializable {
     /**
      * 性别，枚举类型
      */
-    @ApiModelProperty(value = "性别,0表示未知，1表示男，2表示女")
+    @Schema(description = "性别,0表示未知，1表示男，2表示女")
     @TableField("gender")
     private Integer gender;
 

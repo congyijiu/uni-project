@@ -154,6 +154,7 @@ public class DynamicServiceImpl extends ServiceImpl<DynamicMapper, Dynamic> impl
 
     @Override
     public ResponseResult publish(DynamicPublishDto publishDto) {
+
         //1.校验参数
         if(publishDto == null){
             log.info("参数为空");

@@ -7,8 +7,8 @@ import com.uni.pj.users.dtos.UserLoginDto;
 import com.uni.pj.users.dtos.UserRegisterDto;
 import com.uni.pj.users.pojo.Users;
 import com.uni.pj.service.UsersService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +18,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/user")
-@Api(tags = "用户相关接口")
-@CrossOrigin(origins = "*", maxAge = 3600)
+@Tag(name = "用户相关接口")
 public class UserController {
 
     @Autowired
@@ -34,7 +33,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/login")
-    @ApiOperation("登录")
+    @Operation(summary = "登录")
     public ResponseResult login(@RequestBody UserLoginDto userLoginDto) {
         return usersService.login(userLoginDto);
     }
@@ -46,7 +45,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/register")
-    @ApiOperation("注册")
+    @Operation(summary = "注册")
     public ResponseResult register(@RequestBody UserRegisterDto userRegisterDto) {
         return usersService.register(userRegisterDto);
     }
@@ -56,7 +55,7 @@ public class UserController {
      * 根据id查询用户信息
      */
     @GetMapping("/info/{id}")
-    @ApiOperation("根据id查询用户信息")
+    @Operation(summary = "根据id查询用户信息")
     public ResponseResult getUserInfoById(@PathVariable("id") Integer id) {
         return usersService.getUserInfoById(id);
     }
@@ -65,7 +64,7 @@ public class UserController {
      *  查询当前登录用户信息
      */
     @GetMapping("/info")
-    @ApiOperation("查询当前登录用户信息")
+    @Operation(summary = "查询当前登录用户信息")
     public ResponseResult getUserInfo() {
         return usersService.getUserInfo();
     }
@@ -74,7 +73,7 @@ public class UserController {
      * 修改用户信息
      */
     @PutMapping("/info")
-    @ApiOperation("修改用户信息")
+    @Operation(summary = "修改用户信息")
     public ResponseResult updateUserInfo(@RequestBody Users users) {
         return usersService.updateUserInfo(users);
     }
@@ -85,14 +84,14 @@ public class UserController {
      * @param userFollowsPageDto
      */
     @PostMapping("/followsList")
-    @ApiOperation("分页查询用户关注列表")
+    @Operation(summary = "分页查询用户关注列表")
     public ResponseResult getUserFollowsList(@RequestBody UserFollowsPageDto userFollowsPageDto) {
         return usersService.getUserFollowsList(userFollowsPageDto);
     }
 
 
     @PostMapping("/follow/{userId}")
-    @ApiOperation("关注/取消关注")
+    @Operation(summary = "关注/取消关注")
     public ResponseResult follow(@PathVariable Integer userId) {
         return userFollowsService.follow(userId);
     }

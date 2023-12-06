@@ -6,14 +6,9 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
     <artifactId>common</artifactId>
-    <packaging>jar</packaging>
-
     <name>common</name>
-
     <dependencies>
-
         <!--引入jwt依赖-->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
@@ -24,11 +19,6 @@
             <groupId>com.uni</groupId>
             <artifactId>model</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <!--引入slf4j依赖-->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
         </dependency>
     </dependencies>
 </project>
