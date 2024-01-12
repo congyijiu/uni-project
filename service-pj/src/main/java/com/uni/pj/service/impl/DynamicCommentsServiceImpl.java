@@ -3,8 +3,12 @@ package com.uni.pj.service.impl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.uni.pj.common.ResponseResult;
 import com.uni.pj.common.enums.AppHttpCodeEnum;
+import com.uni.pj.dynamic.dtos.AdminDynamicCommentsPageDto;
 import com.uni.pj.dynamic.dtos.DynamicCommentsAddDto;
 import com.uni.pj.dynamic.dtos.DynamicCommentsPageDto;
+import com.uni.pj.dynamic.vos.AdminDynamicCommentDetailVo;
+import com.uni.pj.dynamic.vos.AdminDynamicCommentPageVo;
+import com.uni.pj.dynamic.vos.AdminDynamicDetailVo;
 import com.uni.pj.mapper.DynamicCommentsMapper;
 import com.uni.pj.dynamic.pojos.DynamicComments;
 import com.uni.pj.users.pojo.Users;
@@ -128,6 +132,7 @@ public class DynamicCommentsServiceImpl extends ServiceImpl<DynamicCommentsMappe
         return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID);
     }
 
+
     /**
      * 查询动态评论的回复
      *
@@ -223,4 +228,40 @@ public class DynamicCommentsServiceImpl extends ServiceImpl<DynamicCommentsMappe
             this.updateById(byId);
         }
     }
+
+    /**
+     * 后台分页查询动态评论
+     *
+     * @param page
+     * @param size
+     * @param pageDto
+     * @return
+     */
+    @Override
+    public ResponseResult adminPageList(Integer page, Integer size, AdminDynamicCommentsPageDto pageDto) {
+        //1.校验参数
+        if (page == null || page < 1) {
+            page = 1;
+        }
+        if (size == null || size < 1) {
+            size = 10;
+        }
+        //2.查询
+        Page<AdminDynamicCommentPageVo> page1 = new Page<>(page, size);
+        Page<AdminDynamicCommentPageVo> dynamicCommentsPage = baseMapper.adminPageList(page1, pageDto);
+        //3.返回
+        return ResponseResult.okResult(dynamicCommentsPage);
+    }
+
+    @Override
+    public ResponseResult adminDetail(Long id) {
+        //1.校验参数
+        if (id == null || id < 1) {
+            return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID);
+        }
+        //2.查询
+        AdminDynamicCommentDetailVo dynamicCommentDetailVo = baseMapper.selectDetailById(id);
+        return ResponseResult.okResult(dynamicCommentDetailVo);
+    }
+
 }

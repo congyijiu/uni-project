@@ -1,5 +1,6 @@
 package com.uni.pj.dynamic.pojos;
 
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -85,6 +86,7 @@ public class DynamicComments implements Serializable {
     /**
      * 逻辑删除标志，0表示未删除，1表示已删除
      */
+    @TableLogic
     private Integer isDeleted;
 
 

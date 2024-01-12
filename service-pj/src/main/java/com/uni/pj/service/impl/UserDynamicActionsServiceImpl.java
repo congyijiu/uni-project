@@ -91,6 +91,9 @@ public class UserDynamicActionsServiceImpl extends ServiceImpl<UserDynamicAction
     @Async
     public void updateDynamicCount(Integer dynamicId, Integer type, Integer count){
         Dynamic dynamic = dynamicMapper.selectById(dynamicId);
+        if (count == 0){
+            count = -1;
+        }
         if(type == DynamicActionEnum.LIKE.getCode()){
             dynamic.setLikeCount(dynamic.getLikeCount()+count);
         }else if(type == DynamicActionEnum.FAVORITE.getCode()){

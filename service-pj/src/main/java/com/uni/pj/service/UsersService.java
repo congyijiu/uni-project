@@ -50,4 +50,11 @@ public interface UsersService extends IService<Users> {
     ResponseResult getUserInfoById(Integer id);
 
     ResponseResult getUserFollowsList(UserFollowsPageDto userFollowsPageDto);
+
+    void updateUserFollowsAndFans(Integer followerId,Integer fansId,Integer type);
+
+    ResponseResult getUserList(Integer index, Integer size, String userPageDto);
+
+
+    ResponseResult adminupdateUserInfo(Users users);
 }

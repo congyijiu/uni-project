@@ -4,10 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.uni.pj.common.ResponseResult;
 import com.uni.pj.common.enums.AppHttpCodeEnum;
 import com.uni.pj.mapper.UserFollowsMapper;
+import com.uni.pj.service.UsersService;
 import com.uni.pj.users.pojo.UserFollows;
 import com.uni.pj.service.UserFollowsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.uni.pj.utils.AppThreadLocalUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -23,6 +25,8 @@ public class UserFollowsServiceImpl extends ServiceImpl<UserFollowsMapper, UserF
 
 
 
+    @Autowired
+    private UsersService usersService;
 
     /**
      * 查询关注关系
@@ -51,13 +55,17 @@ public class UserFollowsServiceImpl extends ServiceImpl<UserFollowsMapper, UserF
         //4.判断是否已经关注
         if (userFollows != null) {
             this.removeById(userFollows.getId());
+            usersService.updateUserFollowsAndFans(appUserId,userId,2);
         }else {
             userFollows = new UserFollows();
             userFollows.setFollowerId(appUserId);
             userFollows.setFollowingId(userId);
             this.save(userFollows);
+            usersService.updateUserFollowsAndFans(appUserId,userId,1);
         }
 
         return ResponseResult.okResult(AppHttpCodeEnum.SUCCESS);
     }
+
+
 }

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.uni.pj.mapper.ChatMessageMapper">
+    <select id="getFriendMsgList" resultType="com.uni.pj.ws.vos.FriendMsgVo" timeout="10">
+        SELECT
+            tmp.userId user_id,
+            wu.username,
+            wu.avatar_url,
+            cm.content,
+            cm.type,
+            cm.send_time sendTime,
+            ( SELECT count( * ) FROM chat_message WHERE send_user_id = tmp.userId AND readed = 0 AND accept_user_id = #{userId}) noreadNum
+        FROM
+            (
+                SELECT
+                    max( allMsg.msgId ) msgId,
+                    allMsg.userId userId
+                FROM
+                    (
+                        ( SELECT max( id ) msgId, send_user_id userId FROM chat_message WHERE accept_user_id = #{userId} GROUP BY send_user_id ) UNION ALL
+                        ( SELECT max( id ) msgId, accept_user_id userId FROM chat_message WHERE send_user_id = #{userId} GROUP BY accept_user_id )
+                    ) allMsg
+                GROUP BY
+                    allMsg.userId
+            ) tmp
+                INNER JOIN chat_message cm ON cm.id = tmp.msgId
+                INNER JOIN users wu ON wu.id = tmp.userId
+        ORDER BY cm.send_time DESC
+    </select>
+
+    <select id="getMsgDetail" resultType="com.uni.pj.ws.pojo.ChatMessage" timeout="10">
+        SELECT
+            bcm.id,
+            bcm.send_user_id sendUserId,
+            bcm.accept_user_id acceptUserId,
+            wx.username,
+            wx.avatar_url,
+            bcm.content,
+            bcm.type,
+            bcm.send_time sendTime
+        FROM chat_message bcm
+                 left JOIN users wx on bcm.send_user_id = wx.id
+        WHERE
+            ( bcm.send_user_id = #{send} AND bcm.accept_user_id = #{accept} AND bcm.`delete` = 0 )
+           OR ( bcm.send_user_id = #{accept} AND bcm.accept_user_id = #{send} AND bcm.`delete` = 0 )
+        ORDER BY bcm.send_time DESC
+
+    </select>
+</mapper>

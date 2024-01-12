@@ -1,5 +1,6 @@
 package com.uni.pj.service;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.uni.pj.common.ResponseResult;
 import com.uni.pj.dynamic.pojos.DynamicTypes;
 
 /**
@@ -12,4 +13,5 @@ import com.uni.pj.dynamic.pojos.DynamicTypes;
  */
 public interface DynamicTypesService extends IService<DynamicTypes> {
 
+    ResponseResult adminPageList(Integer page, Integer size);
 }
