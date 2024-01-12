@@ -41,10 +41,4 @@ public class PageDto {
     @Schema(description = "当查询某个用户的动态时，需要传入用户id")
     Integer userId;
 
-    /**
-     * 查询该用户的动态，还是查询该用户的收藏的动态
-     */
-    @Schema(description = "0:查询该用户的动态，1:查询该用户的收藏的动态")
-    Integer queryType;
-
 }

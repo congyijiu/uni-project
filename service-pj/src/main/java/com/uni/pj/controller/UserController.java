@@ -90,6 +90,10 @@ public class UserController {
     }
 
 
+    /**
+     * 关注/取消关注
+     * @param userId
+     */
     @PostMapping("/follow/{userId}")
     @Operation(summary = "关注/取消关注")
     public ResponseResult follow(@PathVariable Integer userId) {

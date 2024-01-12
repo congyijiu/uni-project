@@ -10,7 +10,8 @@
         join users u on d.user_id=u.id
         left join user_dynamic_actions a on a.dynamic_id = d.id and a.user_id = #{userId}
         <where>
-            1=1
+            d.is_delete = 0
+            u.is_deleted = 0
             <if test="pageDto.keyWord != null">
                 and d.title like concat('%',#{pageDto.keyWord},'%')
             </if>
@@ -22,5 +23,35 @@
             </if>
         </where>
         ORDER BY d.post_date
+    </select>
+    <select id="selectfavoritePage" resultType="com.uni.pj.dynamic.vos.PageVo">
+        SELECT *
+        from user_dynamic_actions uda
+        join dynamic d on d.id = uda.dynamic_id
+        join users u on d.user_id=u.id
+        left join user_dynamic_actions a on a.dynamic_id = d.id and a.user_id = #{userId}
+        where uda.user_id = #{pageDto.userId}
+    </select>
+    <select id="selectAdminDynamicList" resultType="com.uni.pj.dynamic.vos.AdminDynamicPageVo">
+        SELECT d.id,d.title,d.like_count,d.favorite_count,d.comment_count,d.post_date,u.username 'authorName',dt.type_name 'typeName'
+        from dynamic d
+        left join users u on d.user_id=u.id
+        left join dynamic_types dt on dt.id=d.type_id
+        <where>
+            d.is_delete = 0
+            <if test="pageDto.keyWord != null">
+                and d.title like concat('%',#{pageDto.keyWord},'%')
+            </if>
+            <if test="pageDto.type != null">
+                and d.type_id = #{pageDto.type}
+            </if>
+            <if test="pageDto.startTime != null">
+                and d.post_date &gt;= #{pageDto.startTime}
+            </if>
+            <if test="pageDto.endTime != null">
+                and d.post_date &lt;= #{pageDto.endTime}
+            </if>
+        </where>
+        ORDER BY d.post_date desc
     </select>
 </mapper>

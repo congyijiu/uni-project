@@ -36,4 +36,34 @@
         </where>
         ORDER BY dc.comment_date desc
     </select>
+
+    <select id="adminPageList" resultType="com.uni.pj.dynamic.vos.AdminDynamicCommentPageVo">
+        SELECT dc.comment_id 'commentId',dc.content 'content',dc.comment_date 'commentDate',u.username 'commentUserName',d.title 'dynamicTitle'
+        from dynamic_comments dc
+        left join users u on dc.user_id=u.id
+        left join dynamic d on dc.dynamic_id=d.id
+        <where>
+            dc.is_deleted = 0
+            <if test="pageDto.dynamicKeyWord != null">
+                and d.title like concat('%',#{pageDto.dynamicKeyWord},'%')
+            </if>
+            <if test="pageDto.commentKeyWord != null">
+                and dc.content like concat('%',#{pageDto.commentKeyWord},'%')
+            </if>
+            <if test="pageDto.startTime != null">
+                and dc.comment_date &gt;= #{pageDto.startTime}
+            </if>
+            <if test="pageDto.endTime != null">
+                and dc.comment_date &lt;= #{pageDto.endTime}
+            </if>
+        </where>
+        ORDER BY dc.comment_date desc
+    </select>
+    <select id="selectDetailById" resultType="com.uni.pj.dynamic.vos.AdminDynamicCommentDetailVo">
+        SELECT dc.comment_id 'commentId',dc.content 'content',dc.comment_date 'commentDate',u.username 'commentUserName',d.title 'dynamicTitle'
+        from dynamic_comments dc
+        left join users u on dc.user_id=u.id
+        left join dynamic d on dc.dynamic_id=d.id
+        where dc.comment_id = #{commentId}
+    </select>
 </mapper>

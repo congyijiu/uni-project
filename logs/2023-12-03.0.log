@@ -1,0 +1,27 @@
+[2023-12-03 00\:23\:58] [INFO] [com.uni.pj.uniPjApplication] Starting uniPjApplication using Java 17.0.9 with PID 1448 (E:\Projects\javaProject\project\service-pj\target\classes started by Win10 in E:\Projects\javaProject\project)
+[2023-12-03 00\:23\:58] [INFO] [com.uni.pj.uniPjApplication] No active profile set, falling back to 1 default profile: "default"
+[2023-12-03 00\:23\:59] [WARN] [org.springframework.core.LocalVariableTableParameterNameDiscoverer] Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: org.mybatis.spring.mapper.MapperFactoryBean
+[2023-12-03 00\:23\:59] [INFO] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat initialized with port(s): 8080 (http)
+[2023-12-03 00\:23\:59] [INFO] [org.apache.coyote.http11.Http11NioProtocol] Initializing ProtocolHandler ["http-nio-8080"]
+[2023-12-03 00\:23\:59] [INFO] [org.apache.catalina.core.StandardService] Starting service [Tomcat]
+[2023-12-03 00\:23\:59] [INFO] [org.apache.catalina.core.StandardEngine] Starting Servlet engine: [Apache Tomcat/10.1.1]
+[2023-12-03 00\:23\:59] [INFO] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] Initializing Spring embedded WebApplicationContext
+[2023-12-03 00\:23\:59] [INFO] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext] Root WebApplicationContext: initialization completed in 1171 ms
+[2023-12-03 00\:24\:00] [INFO] [org.apache.coyote.http11.Http11NioProtocol] Starting ProtocolHandler ["http-nio-8080"]
+[2023-12-03 00\:24\:00] [INFO] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat started on port(s): 8080 (http) with context path ''
+[2023-12-03 00\:24\:00] [INFO] [com.uni.pj.uniPjApplication] Started uniPjApplication in 2.921 seconds (process running for 3.685)
+[2023-12-03 00\:24\:07] [INFO] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] Initializing Spring DispatcherServlet 'dispatcherServlet'
+[2023-12-03 00\:24\:07] [INFO] [org.springframework.web.servlet.DispatcherServlet] Initializing Servlet 'dispatcherServlet'
+[2023-12-03 00\:24\:07] [INFO] [org.springframework.web.servlet.DispatcherServlet] Completed initialization in 1 ms
+[2023-12-03 00\:24\:07] [INFO] [com.uni.pj.interceptor.UniInterceptor] ----------------------------------------
+[2023-12-03 00\:24\:07] [INFO] [com.uni.pj.interceptor.UniInterceptor] 进入拦截器
+[2023-12-03 00\:24\:07] [INFO] [com.uni.pj.interceptor.UniInterceptor] requestURI: /dynamic/page
+[2023-12-03 00\:24\:07] [INFO] [com.uni.pj.interceptor.UniInterceptor] userId: 2
+[2023-12-03 00\:24\:07] [INFO] [com.uni.pj.interceptor.UniInterceptor] token验证通过
+[2023-12-03 00\:24\:07] [INFO] [com.uni.pj.service.impl.DynamicServiceImpl] 分页查询动态
+[2023-12-03 00\:24\:07] [INFO] [com.uni.pj.service.impl.DynamicServiceImpl] pageIndex:1,pageSize:160,type:1,keyWord:
+[2023-12-03 00\:24\:07] [INFO] [com.alibaba.druid.pool.DruidDataSource] {dataSource-1} inited
+[2023-12-03 00\:24\:08] [INFO] [com.uni.pj.service.impl.DynamicServiceImpl] 分页查询动态成功
+[2023-12-03 00\:24\:08] [INFO] [com.uni.pj.interceptor.UniInterceptor] ----------------------------------------
+[2023-12-03 00\:25\:57] [INFO] [com.alibaba.druid.pool.DruidDataSource] {dataSource-1} closing ...
+[2023-12-03 00\:25\:57] [INFO] [com.alibaba.druid.pool.DruidDataSource] {dataSource-1} closed

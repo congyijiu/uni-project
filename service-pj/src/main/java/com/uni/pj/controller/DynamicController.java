@@ -3,6 +3,7 @@ package com.uni.pj.controller;
 import com.uni.pj.common.ResponseResult;
 import com.uni.pj.common.enums.AppHttpCodeEnum;
 import com.uni.pj.dynamic.dtos.DynamicPublishDto;
+import com.uni.pj.dynamic.dtos.FavoritePageDto;
 import com.uni.pj.dynamic.dtos.PageDto;
 import com.uni.pj.dynamic.pojos.Dynamic;
 import com.uni.pj.service.DynamicService;
@@ -58,6 +59,14 @@ public class DynamicController {
         return dynamicService.publish(publishDto);
     }
 
+    /**
+     * 分页查询用户收藏的动态
+     */
+    @Operation(summary = "分页查询用户收藏的动态")
+    @PostMapping("/favorite/page")
+    public ResponseResult favoritePage(@RequestBody FavoritePageDto pageDto){
+        return dynamicService.favoritePage(pageDto);
+    }
 
 
 }

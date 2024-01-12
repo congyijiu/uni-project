@@ -61,4 +61,14 @@ public class UserInfoVo {
      * 电子邮件地址，最大长度100
      */
     private String email;
+
+    /**
+     * 用户关注数
+     */
+    private Integer follows;
+
+    /**
+     * 用户粉丝数
+     */
+    private Integer fans;
 }

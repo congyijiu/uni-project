@@ -18,6 +18,7 @@ import com.uni.pj.utils.MD5Utils;
 import com.uni.pj.users.vos.UserInfoVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -58,14 +59,13 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
         }
 
         //4.判断密码是否正确
-        String encode = MD5Utils.encode(userLoginDto.getPassword());
+        String encode = MD5Utils.encode(userLoginDto.getPassword());//md5加密
         userLoginDto.setPassword(encode);
         if (users.getPassword().equals(userLoginDto.getPassword())) {
-            String token = AppJwtUtil.getToken(Long.valueOf(users.getId()));
+            String token = AppJwtUtil.getToken(Long.valueOf(users.getId()));//生成token
             Map<String, String> map = new HashMap<>();
             map.put("token", token);
             map.put("username", users.getUsername());
-
             log.info("用户:{}",map.get("username"));
             log.info("用户登录成功");
             return ResponseResult.okResult(map);
@@ -121,24 +121,29 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
 
         return ResponseResult.okResult(map);
     }
-
+    /**
+     * 获取当前用户信息
+     * @return
+     */
     @Override
     public ResponseResult getUserInfo() {
 
         Integer appUserId = AppThreadLocalUtil.getAppUserId();
-
         Users users = this.getById(appUserId);
-
         if(users == null){
             return ResponseResult.errorResult(AppHttpCodeEnum.DATA_NOT_EXIST);
         }
-
         UserInfoVo userInfoVo = new UserInfoVo();
         BeanUtils.copyProperties(users,userInfoVo);
 
         return ResponseResult.okResult(userInfoVo);
     }
 
+    /**
+     * 修改用户信息
+     * @param users
+     * @return
+     */
     @Override
     public ResponseResult updateUserInfo(Users users) {
         //1.校验参数
@@ -149,56 +154,57 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
         Integer appUserId = AppThreadLocalUtil.getAppUserId();
         //3.根据id查询用户
         Users user = this.getById(appUserId);
-
         if(user == null){
             return ResponseResult.errorResult(AppHttpCodeEnum.DATA_NOT_EXIST);
         }
 
-        //4.修改用户信息
-        Users users1 = new Users();
-
-        //5.设置用户id
-        users1.setId(appUserId);
-        //5.1修改用户密码
+        //4.1修改用户密码
         if (users.getPassword()!= "" && users.getPassword()!=null){
             String encode = MD5Utils.encode(users.getPassword());
-            users1.setPassword(encode);
-        }
-        //5.2修改用户头像
-        if (users.getAvatarUrl() != "" && users.getAvatarUrl() != null){
-            users1.setAvatarUrl(user.getAvatarUrl());
-        }
-        //5.3修改用户性别
-        if (users.getGender() != null){
-            users1.setGender(users.getGender());
-        }
-        //5.4修改用户爱好
-        if (users.getHobbies() != "" && users.getHobbies() != null){
-            users1.setHobbies(users.getHobbies());
-        }
-        //5.5修改用户电话号码
-        if (users.getPhoneNumber() != "" && users.getPhoneNumber() != null){
-            users1.setPhoneNumber(users.getPhoneNumber());
-        }
-        //5.6修改用户个性签名
-        if (users.getSignature() != "" && users.getSignature() != null){
-            users1.setSignature(users.getSignature());
-        }
-        //5.7修改用户名
-        if (users.getUsername() != "" && users.getUsername() != null){
-            Users one = this.getOne(new LambdaQueryWrapper<Users>().eq(Users::getUsername, users.getUsername()));
-            if (one != null){
-                return ResponseResult.errorResult(AppHttpCodeEnum.DATA_EXIST);
-            }
-            users1.setUsername(users.getUsername());
-        }
-        //5.8修改用户邮箱
-        if (users.getEmail() != "" && users.getEmail() != null){
-            users1.setEmail(users.getEmail());
+            user.setPassword(encode);
         }
 
-        //6.更新用户信息
-        this.updateById(users1);
+        //4.2修改用户头像
+        if (users.getAvatarUrl() != "" && users.getAvatarUrl() != null){
+            user.setAvatarUrl(users.getAvatarUrl());
+        }
+
+        //4.3修改用户性别
+        if (users.getGender() != null){
+            user.setGender(users.getGender());
+        }
+
+        //4.4修改用户爱好
+        if (users.getHobbies() != "" && users.getHobbies() != null){
+            user.setHobbies(users.getHobbies());
+        }
+
+        //4.5修改用户电话号码
+        if (users.getPhoneNumber() != "" && users.getPhoneNumber() != null){
+            user.setPhoneNumber(users.getPhoneNumber());
+        }
+
+        //4.6修改用户个性签名
+        if (users.getSignature() != "" && users.getSignature() != null){
+            user.setSignature(users.getSignature());
+        }
+
+        //4.7修改用户名
+        if (users.getUsername() != "" && users.getUsername() != null){
+            Users one = this.getOne(new LambdaQueryWrapper<Users>().eq(Users::getUsername, users.getUsername()));
+            if (one != null && !one.getUsername().equals(users.getUsername())){
+                return ResponseResult.errorResult(AppHttpCodeEnum.DATA_EXIST);
+            }
+            user.setUsername(users.getUsername());
+        }
+
+        //4.8修改用户邮箱
+        if (users.getEmail() != "" && users.getEmail() != null){
+            user.setEmail(users.getEmail());
+        }
+
+        //4.更新用户信息
+        this.updateById(user);
 
         return ResponseResult.okResult(AppHttpCodeEnum.SUCCESS);
     }
@@ -220,6 +226,11 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
         return ResponseResult.okResult(userInfoVo);
     }
 
+    /**
+     * 分页查询用户关注列表
+     * @param userFollowsPageDto
+     * @return
+     */
     @Override
     public ResponseResult getUserFollowsList(UserFollowsPageDto userFollowsPageDto) {
         //1.校验参数
@@ -236,5 +247,106 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
         baseMapper.selectUserFollowsPage(page,userFollowsPageDto);
 
         return ResponseResult.okResult(page);
+    }
+
+
+    /**
+     * 异步修改用户信息（关注数和粉丝数）
+     * @param followerId 关注者id
+     * @param fansId 被关注者id
+     * @param type 1关注 2取消关注
+     * @return
+     */
+    @Async
+    @Override
+    public void updateUserFollowsAndFans(Integer followerId,Integer fansId,Integer type){
+        //1.根据id查询用户
+        Users follower = this.getById(followerId);
+        Users fans = this.getById(fansId);
+        //2.修改用户关注数和粉丝数
+        if (type == 1){
+            follower.setFollows(follower.getFollows()+1);
+            fans.setFans(fans.getFans()+1);
+        }else if (type == 2){
+            follower.setFollows(follower.getFollows()-1);
+            fans.setFans(fans.getFans()-1);
+        }
+        //3.更新用户信息
+        this.updateById(follower);
+        this.updateById(fans);
+    }
+
+    @Override
+    public ResponseResult getUserList(Integer index, Integer size, String keyword) {
+        Page<Users> usersPage = new Page<>(index, size);
+
+        LambdaQueryWrapper<Users> wrapper = new LambdaQueryWrapper<>();
+        if (keyword != null && keyword != ""){
+            wrapper.like(Users::getUsername,keyword);
+        }
+        Page<Users> page = this.page(usersPage,wrapper);
+        return ResponseResult.okResult(page);
+    }
+
+    @Override
+    public ResponseResult adminupdateUserInfo(Users users) {
+        //1.校验参数
+        if (users == null) {
+            return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID);
+        }
+        //2.根据id查询用户
+        Users user = this.getById(users.getId());
+        if(user == null){
+            return ResponseResult.errorResult(AppHttpCodeEnum.DATA_NOT_EXIST);
+        }
+        //4.1修改用户密码
+        if (users.getPassword()!= "" && users.getPassword()!=null){
+            String encode = MD5Utils.encode(users.getPassword());
+            user.setPassword(encode);
+        }
+
+        //4.2修改用户头像
+        if (users.getAvatarUrl() != "" && users.getAvatarUrl() != null){
+            user.setAvatarUrl(users.getAvatarUrl());
+        }
+
+        //4.3修改用户性别
+        if (users.getGender() != null){
+            user.setGender(users.getGender());
+        }
+
+        //4.4修改用户爱好
+        if (users.getHobbies() != "" && users.getHobbies() != null){
+            user.setHobbies(users.getHobbies());
+        }
+
+        //4.5修改用户电话号码
+        if (users.getPhoneNumber() != "" && users.getPhoneNumber() != null){
+            user.setPhoneNumber(users.getPhoneNumber());
+        }
+
+        //4.6修改用户个性签名
+        if (users.getSignature() != "" && users.getSignature() != null){
+            user.setSignature(users.getSignature());
+        }
+
+        //4.7修改用户名
+        if (users.getUsername() != "" && users.getUsername() != null){
+            Users one = this.getOne(new LambdaQueryWrapper<Users>().eq(Users::getUsername, users.getUsername()));
+            if (one != null && !one.getUsername().equals(users.getUsername())){
+                return ResponseResult.errorResult(AppHttpCodeEnum.DATA_EXIST);
+            }
+            user.setUsername(users.getUsername());
+        }
+
+        //4.8修改用户邮箱
+        if (users.getEmail() != "" && users.getEmail() != null){
+            user.setEmail(users.getEmail());
+        }
+
+        //4.更新用户信息
+        this.updateById(user);
+
+        return ResponseResult.okResult(AppHttpCodeEnum.SUCCESS);
     }
 }
