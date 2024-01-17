@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.uni.pj.common.ResponseResult;
 import com.uni.pj.common.enums.AppHttpCodeEnum;
+import com.uni.pj.mapper.UserFollowsMapper;
+import com.uni.pj.service.UserFollowsService;
 import com.uni.pj.users.dtos.UserFollowsPageDto;
 import com.uni.pj.users.dtos.UserLoginDto;
 import com.uni.pj.users.dtos.UserRegisterDto;
@@ -18,6 +20,7 @@ import com.uni.pj.utils.MD5Utils;
 import com.uni.pj.users.vos.UserInfoVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +38,10 @@ import java.util.Map;
 @Service
 @Slf4j
 public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements UsersService {
+
+    @Autowired
+    private UserFollowsMapper userFollowsMapper;
+
 
     @Override
     public ResponseResult login(UserLoginDto userLoginDto) {
@@ -113,6 +120,9 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
         Map<String, String> map = new HashMap<>();
         map.put("token", token);
         map.put("username", user.getUsername());
+
+        //6.注册成功后自动关注机器人
+        userFollowsMapper.autoFollowBot(user.getId());
 
 
         log.info("用户:{}",map.get("username"));

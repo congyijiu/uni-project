@@ -3,14 +3,13 @@ package com.uni.pj.component;
 import com.alibaba.fastjson.JSONObject;
 import com.uni.pj.bigmodle.dto.MsgDTO;
 import com.uni.pj.bigmodle.dto.RequestDTO;
-import com.uni.pj.config.XfXhConfig;
+import com.uni.pj.config.xhBotConfig;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.net.URL;
@@ -25,9 +24,9 @@ import java.util.*;
 @Slf4j
 public class XfXhStreamClient {
     @Autowired
-    private XfXhConfig xfXhConfig;
+    private xhBotConfig xhBotConfig;
 
-    @Value("${xfxh.QPS}")
+    @Value("${xh-bot.QPS}")
     private int connectionTokenCount;
 
     /**
@@ -96,7 +95,7 @@ public class XfXhStreamClient {
      */
     public String getAuthUrl() {
         try {
-            URL url = new URL(xfXhConfig.getHostUrl());
+            URL url = new URL(xhBotConfig.getHostUrl());
             // 时间
             SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.US);
             format.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -107,14 +106,14 @@ public class XfXhStreamClient {
                     "GET " + url.getPath() + " HTTP/1.1";
             // SHA256加密
             Mac mac = Mac.getInstance("hmacsha256");
-            SecretKeySpec spec = new SecretKeySpec(xfXhConfig.getApiSecret().getBytes(StandardCharsets.UTF_8), "hmacsha256");
+            SecretKeySpec spec = new SecretKeySpec(xhBotConfig.getApiSecret().getBytes(StandardCharsets.UTF_8), "hmacsha256");
             mac.init(spec);
 
             byte[] hexDigits = mac.doFinal(preStr.getBytes(StandardCharsets.UTF_8));
             // Base64加密
             String sha = Base64.getEncoder().encodeToString(hexDigits);
             // 拼接
-            String authorizationOrigin = String.format("api_key=\"%s\", algorithm=\"%s\", headers=\"%s\", signature=\"%s\"", xfXhConfig.getApiKey(), "hmac-sha256", "host date request-line", sha);
+            String authorizationOrigin = String.format("api_key=\"%s\", algorithm=\"%s\", headers=\"%s\", signature=\"%s\"", xhBotConfig.getApiKey(), "hmac-sha256", "host date request-line", sha);
             // 拼接地址
             HttpUrl httpUrl = Objects.requireNonNull(HttpUrl.parse("https://" + url.getHost() + url.getPath())).newBuilder().
                     addQueryParameter("authorization", Base64.getEncoder().encodeToString(authorizationOrigin.getBytes(StandardCharsets.UTF_8))).
@@ -138,8 +137,8 @@ public class XfXhStreamClient {
      */
     public RequestDTO getRequestParam(String uid, List<MsgDTO> msgList) {
         RequestDTO requestDTO = new RequestDTO();
-        requestDTO.setHeader(new RequestDTO.HeaderDTO(xfXhConfig.getAppId(), uid));
-        requestDTO.setParameter(new RequestDTO.ParameterDTO(new RequestDTO.ParameterDTO.ChatDTO(xfXhConfig.getDomain(), xfXhConfig.getTemperature(), xfXhConfig.getMaxTokens())));
+        requestDTO.setHeader(new RequestDTO.HeaderDTO(xhBotConfig.getAppId(), uid));
+        requestDTO.setParameter(new RequestDTO.ParameterDTO(new RequestDTO.ParameterDTO.ChatDTO(xhBotConfig.getDomain(), xhBotConfig.getTemperature(), xhBotConfig.getMaxTokens())));
         requestDTO.setPayload(new RequestDTO.PayloadDTO(new RequestDTO.PayloadDTO.MessageDTO(msgList)));
         return requestDTO;
     }

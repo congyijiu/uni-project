@@ -17,4 +17,6 @@ public interface UserFollowsService extends IService<UserFollows> {
     UserFollows selectFollows(Integer userId, Integer userId1);
 
     ResponseResult follow(Integer userId);
+
+    void autoFollowBot(Integer id);
 }

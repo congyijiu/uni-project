@@ -8,9 +8,9 @@ import org.springframework.context.annotation.Configuration;
  * 讯飞星火配置类
  */
 @Configuration
-@ConfigurationProperties(prefix = "xfxh")
+@ConfigurationProperties(prefix = "xh-bot")
 @Data
-public class XfXhConfig {
+public class xhBotConfig {
     /**
      * 服务引擎使用 讯飞星火认知大模型V2.0，如果使用 V1.5 需要将 hostUrl 修改为 https://spark-api.xf-yun.com/v1.1/chat
      */

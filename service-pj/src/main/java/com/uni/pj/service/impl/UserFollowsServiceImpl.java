@@ -67,5 +67,13 @@ public class UserFollowsServiceImpl extends ServiceImpl<UserFollowsMapper, UserF
         return ResponseResult.okResult(AppHttpCodeEnum.SUCCESS);
     }
 
+    @Override
+    public void autoFollowBot(Integer id) {
+        UserFollows userFollows = new UserFollows();
+        userFollows.setFollowerId(id);
+        userFollows.setFollowingId(27);
+        this.save(userFollows);
+    }
+
 
 }

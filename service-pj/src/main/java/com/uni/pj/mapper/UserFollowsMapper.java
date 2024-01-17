@@ -15,4 +15,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface UserFollowsMapper extends BaseMapper<UserFollows> {
 
+    void autoFollowBot(Integer id);
 }

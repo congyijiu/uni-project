@@ -3,17 +3,15 @@ package com.uni.pj.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.uni.pj.bigmodle.dto.MsgDTO;
 import com.uni.pj.component.XfXhStreamClient;
-import com.uni.pj.config.XfXhConfig;
+import com.uni.pj.config.xhBotConfig;
 import com.uni.pj.listener.XfXhWebSocketListener;
 import com.uni.pj.service.BigModleService;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.WebSocket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Collections;
-import java.util.UUID;
 
 /**
  * @author congyijiu
@@ -27,7 +25,7 @@ public class BigModleServiceImpl implements BigModleService {
     private XfXhStreamClient xfXhStreamClient;
 
     @Autowired
-    private XfXhConfig xfXhConfig;
+    private xhBotConfig xhBotConfig;
 
     public String sendQuestion(String question,Integer userId) {
         // 如果是无效字符串，则不对大模型进行请求
@@ -53,7 +51,7 @@ public class BigModleServiceImpl implements BigModleService {
         try {
             int count = 0;
             // 为了避免死循环，设置循环次数来定义超时时长
-            int maxCount = xfXhConfig.getMaxResponseTime() * 5;
+            int maxCount = xhBotConfig.getMaxResponseTime() * 5;
             while (count <= maxCount) {
                 Thread.sleep(200);
                 if (listener.isWsCloseFlag()) {

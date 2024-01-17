@@ -83,11 +83,11 @@ public class WebSocket {
             onlineNumber++;
         }
         log.info("连接成功，连接用户ID:" + userId + ",当前在线人数为:" + onlineNumber);
-        MessageVo messageVo = new MessageVo();
-        messageVo.setSendUserId(0);
-        messageVo.setType("text");
-        messageVo.setContent("连接成功");
-        String jsonString = JSON.toJSONString(messageVo);
+//        MessageVo messageVo = new MessageVo();
+//        messageVo.setSendUserId(0);
+//        messageVo.setType("text");
+//        messageVo.setContent("连接成功");
+//        String jsonString = JSON.toJSONString(messageVo);
 //        this.sendMessage(jsonString);
     }
 
@@ -113,21 +113,40 @@ public class WebSocket {
         if(messageDto.getAcceptUserId()!=0){
             messageDto.setSendUserId(this.userId);
             chatMessageService.addFriendMsg(messageDto);
+            log.info("保存消息成功");
         }
+        // 判断是否是发给机器人
         if (messageDto.getAcceptUserId()==27){
+            // 调用机器人接口
             String question = bigModleService.sendQuestion(messageDto.getContent(),this.userId);
+            // 封装消息
             MessageVo messageVo = new MessageVo();
             messageVo.setSendUserId(0);
             messageVo.setType("text");
             messageVo.setContent(question);
             String jsonString = JSON.toJSONString(messageVo);
+
+            //封装消息
+            ChatMessageDto chatMessageDto = new ChatMessageDto();
+            chatMessageDto.setSendUserId(27);
+            chatMessageDto.setAcceptUserId(this.userId);
+            chatMessageDto.setContent(question);
+            chatMessageDto.setType("text");
+            // 将机器人的回复存入数据库
+            chatMessageService.addFriendMsg(chatMessageDto);
+            log.info("保存机器人回复成功");
+
+            // 返回消息
             this.sendMessage(jsonString);
+            log.info("发送机器人回复成功");
         }else if (clients.containsKey(messageDto.getAcceptUserId())) {
+            // 封装消息
             MessageVo messageVo = new MessageVo();
             messageVo.setSendUserId(this.userId);
             messageVo.setType(messageDto.getType());
             messageVo.setContent(messageDto.getContent());
             String jsonString = JSON.toJSONString(messageVo);
+            // 发送消息
             clients.get(messageDto.getAcceptUserId()).sendMessage(jsonString);
         }
     }

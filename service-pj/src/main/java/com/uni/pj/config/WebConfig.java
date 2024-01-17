@@ -15,7 +15,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         // 对swagger的请求不进行拦截
         String[] excludePatterns = new String[]{"/user/login", "/user/register","/swagger-resources/**", "/webjars/**", "/v3/**", "/swagger-ui.html/**",
-                "/api", "/api-docs", "/api-docs/**", "/doc.html/**","/error/**","/admin/**"};
+                "/api", "/api-docs", "/api-docs/**", "/doc.html/**","/error/**","/admin/system/index/login"};
         registry.addInterceptor(new UniInterceptor())
                 .addPathPatterns("/**")
                 .excludePathPatterns(excludePatterns);

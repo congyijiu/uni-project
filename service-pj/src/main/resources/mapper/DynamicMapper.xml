@@ -11,7 +11,6 @@
         left join user_dynamic_actions a on a.dynamic_id = d.id and a.user_id = #{userId}
         <where>
             d.is_delete = 0
-            u.is_deleted = 0
             <if test="pageDto.keyWord != null">
                 and d.title like concat('%',#{pageDto.keyWord},'%')
             </if>

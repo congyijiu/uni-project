@@ -2,7 +2,9 @@ package com.uni.pj.controller.admin;
 
 
 import com.uni.pj.common.ResponseResult;
+import com.uni.pj.common.enums.AppHttpCodeEnum;
 import com.uni.pj.service.UsersService;
+import com.uni.pj.users.dtos.UserLoginDto;
 import com.uni.pj.users.dtos.UserPageDto;
 import com.uni.pj.users.pojo.Users;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,7 +21,7 @@ import java.util.Map;
  * 后台登录登出
  * </p>
  */
-@Tag(name = "用户后台管理接口")
+@Tag(name = "后台用户管理接口")
 @RestController
 @RequestMapping("/admin/system/index")
 public class AdminUserController {
@@ -35,10 +37,19 @@ public class AdminUserController {
      */
     @PostMapping("/login")
     @Operation(summary = "登录")
-    public ResponseResult login() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("token", "admin");
-        return ResponseResult.okResult(map);
+    public ResponseResult login(@RequestBody UserLoginDto userLoginDto) {
+        //1.校验参数
+        if (userLoginDto == null) {
+            return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID);
+        }
+
+
+        String username = userLoginDto.getUsername();
+        String password = userLoginDto.getPassword();
+        if("admin".equals(username)){
+            return usersService.login(userLoginDto);
+        }
+        return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID);
     }
 
     /**
