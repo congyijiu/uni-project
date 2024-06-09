@@ -40,6 +40,7 @@
             wx.avatar_url,
             bcm.content,
             bcm.type,
+            bcm.image_base64,
             bcm.send_time sendTime
         FROM chat_message bcm
                  left JOIN users wx on bcm.send_user_id = wx.id

@@ -29,7 +29,7 @@ public class MessageController{
 
     @PostMapping("/addFriendMsg")
     @Operation(summary = "添加好友消息")
-    public ResponseResult addFriendMsg(ChatMessageDto dto) {
+    public ResponseResult addFriendMsg(@RequestBody ChatMessageDto dto) {
         return chatMessageService.addFriendMsg(dto);
     }
 
