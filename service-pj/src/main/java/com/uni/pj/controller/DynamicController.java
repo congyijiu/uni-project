@@ -68,5 +68,14 @@ public class DynamicController {
         return dynamicService.favoritePage(pageDto);
     }
 
+    /**
+     * 查询点赞最多的十条动态
+     */
+    @Operation(summary = "查询点赞最多的十条动态")
+    @GetMapping("/top10")
+    public ResponseResult top10(){
+        return dynamicService.top10();
+    }
+
 
 }

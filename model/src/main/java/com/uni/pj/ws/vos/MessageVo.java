@@ -21,4 +21,9 @@ public class MessageVo {
      * 发送内容
      */
     private String content;
+
+    /**
+     * 发送图片的base64编码
+     */
+    private String imageBase64;
 }

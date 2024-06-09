@@ -53,6 +53,7 @@ public class ChatMessageServiceImpl extends ServiceImpl<ChatMessageMapper, ChatM
         chatMessage.setSendUserId(dto.getSendUserId());
         chatMessage.setContent(dto.getContent());
         chatMessage.setType(dto.getType());
+        chatMessage.setImageBase64(dto.getImageBase64());
         this.save(chatMessage);
         return ResponseResult.okResult("发送成功");
     }

@@ -39,4 +39,6 @@ public interface DynamicService extends IService<Dynamic> {
     ResponseResult getAdminDynamicList(Integer page, Integer size, AdminDynamicListDto adminDynamicListDto);
 
     ResponseResult adminDetail(Long id);
+
+    ResponseResult top10();
 }

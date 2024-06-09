@@ -46,5 +46,4 @@ public class UserFollows implements Serializable {
      */
     private LocalDateTime followDate;
 
-
 }

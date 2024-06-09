@@ -65,5 +65,10 @@ public class ChatMessage implements Serializable {
      */
     private LocalDateTime sendTime;
 
+    /**
+     * 发送图片的base64编码
+     */
+    private String imageBase64;
+
 
 }

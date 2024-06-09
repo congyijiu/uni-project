@@ -12,7 +12,6 @@ public class ChatMessageDto {
      * 发送用户id
      */
     private Integer sendUserId;
-
     /**
      * 接手用户id
      */
@@ -26,5 +25,10 @@ public class ChatMessageDto {
      * 发送内容
      */
     private String content;
+
+    /**
+     * 发送图片的base64编码
+     */
+    private String imageBase64;
 
 }

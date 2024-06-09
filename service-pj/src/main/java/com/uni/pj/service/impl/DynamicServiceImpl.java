@@ -283,4 +283,10 @@ public class DynamicServiceImpl extends ServiceImpl<DynamicMapper, Dynamic> impl
         }
         return ResponseResult.okResult(dynamicDetailVo);
     }
+
+    @Override
+    public ResponseResult top10() {
+        LambdaQueryWrapper<Dynamic> last = new LambdaQueryWrapper<Dynamic>().orderByDesc(Dynamic::getLikeCount).last("limit 10");
+        return ResponseResult.okResult(this.list(last));
+    }
 }
