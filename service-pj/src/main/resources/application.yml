@@ -13,6 +13,10 @@ spring: #springboot的配置
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher # 路径匹配策略
+  web:
+    websocket:
+      max-text-message-size: 16MB # 设置为合适的大小
+      max-binary-message-size: 16MB # 设置为合适的大小
 # mybatis-plus相关配置
 mybatis-plus:
   # xml扫描，多个目录用逗号或者分号分隔（告诉 Mapper 所对应的 XML 文件位置）

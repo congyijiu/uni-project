@@ -1,6 +1,7 @@
 package com.uni.pj.ws;
 
 import com.alibaba.fastjson.JSON;
+import com.uni.pj.config.CustomConfigurator;
 import com.uni.pj.service.BigModleService;
 import com.uni.pj.service.ChatMessageService;
 import com.uni.pj.ws.dtos.ChatMessageDto;
@@ -9,8 +10,10 @@ import com.uni.pj.ws.vos.MessageVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.websocket.*;
+import jakarta.websocket.server.HandshakeRequest;
 import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
+import jakarta.websocket.server.ServerEndpointConfig;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.HttpUrl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,8 +75,13 @@ public class WebSocket {
     @OnOpen
     public void onOpen(@PathParam("userId") String userId, Session session) {
 
+        session.setMaxTextMessageBufferSize(10*1024*1024);
+        session.setMaxBinaryMessageBufferSize(10*1024*1024);
+
         this.session = session;
         this.userId = Integer.parseInt(userId);
+
+
 
         if (clients.containsKey(Integer.parseInt(userId))) {
             clients.remove(Integer.parseInt(userId));
@@ -90,6 +98,7 @@ public class WebSocket {
 //        String jsonString = JSON.toJSONString(messageVo);
 //        this.sendMessage(jsonString);
     }
+
 
     @OnError
     public void onError(Throwable throwable) {
@@ -147,6 +156,10 @@ public class WebSocket {
             messageVo.setContent(messageDto.getContent());
             messageVo.setImageBase64(messageDto.getImageBase64());
             String jsonString = JSON.toJSONString(messageVo);
+
+            //加上后缀，标志分片结束标志
+            jsonString = jsonString + "-MessageInEnd";
+
             // 发送消息
             clients.get(messageDto.getAcceptUserId()).sendMessage(jsonString);
         }
@@ -160,5 +173,16 @@ public class WebSocket {
         }
     }
 
+//    @OnError
+//    public void onError(Session session, Throwable throwable) {
+//        System.err.println("WebSocket错误: " + throwable.getMessage());
+//        throwable.printStackTrace();
+//    }
+
+
 
 }
+
+
+
+
